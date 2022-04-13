@@ -3,10 +3,6 @@ const Card = require("../models/cards");
 function getCards(req, res) {
   Card.find({})
     .then((cards) => {
-      if (cards.length === 0) {
-        res.status(404).send({ message: "Нет карточек" });
-        return;
-      }
       res.status(200).send(cards);
     })
     .catch((err) => {
@@ -59,7 +55,11 @@ function likeCard(req, res) {
       }
       res.status(200).send(card);
     })
-    .catch((err) => console.log(err));
+    .catch((err) => {
+      if (err.name === "CastError") {
+        res.status(400).send({ message: "Невалидный id " });
+      }
+    });
 }
 
 function dislikeCard(req, res) {
@@ -76,7 +76,11 @@ function dislikeCard(req, res) {
       res.status(200).send(card);
     })
 
-    .catch((err) => console.log(err));
+    .catch((err) => {
+      if (err.name === "CastError") {
+        res.status(400).send({ message: "Невалидный id " });
+      }
+    });
 }
 
 module.exports = {

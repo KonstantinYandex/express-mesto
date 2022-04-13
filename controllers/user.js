@@ -3,10 +3,7 @@ const User = require("../models/users");
 function getUsers(req, res) {
   User.find({})
     .then((users) => {
-      if (users.length === 0) {
-        res.status(404).send({ message: "Пользователи не найдены." });
-        return;
-      }
+      res.status(200).send(users);
     })
     .catch((err) => {
       res.status(500).send({ message: `Внутренняя ошибка сервера: ${err}` });
@@ -14,12 +11,14 @@ function getUsers(req, res) {
 }
 
 function getUserOne(req, res) {
-  User.findById(req.params.id)
+  User.findById(req.params.userId)
     .then((user) => {
       if (!user) {
         res
           .status(404)
           .send({ message: "Пользователем с таким id не найден." });
+      } else {
+        res.status(200).send(user);
       }
     })
     .catch((err) => {
@@ -47,11 +46,13 @@ function updateProfile(req, res) {
   User.findByIdAndUpdate(
     req.user._id,
     { name, about },
-    { new: true, runValidators: true, upsert: true }
+    { new: true, runValidators: true }
   )
     .then((user) => {
       if (!user) {
         res.status(404).send({ message: "Пользователь с таким id не найден." });
+      } else {
+        res.status(200).send(user);
       }
     })
     .catch((err) => {
@@ -69,11 +70,13 @@ function updateAvatar(req, res) {
   User.findByIdAndUpdate(
     req.user._id,
     { avatar },
-    { new: true, runValidators: true, upsert: true }
+    { new: true, runValidators: true }
   )
     .then((user) => {
       if (!user) {
         res.status(404).send({ message: "Пользователь с таким id не найден." });
+      } else {
+        res.status(200).send(user);
       }
     })
     .catch((err) => {

@@ -3,5 +3,5 @@
     "no-underscore-dangle": 0
   },
   "extends": "airbnb-base",
-  "quotes": ["error", "single"]
+  "quotes": ["single"]
 }
