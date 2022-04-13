@@ -11,7 +11,7 @@ function getUsers(req, res) {
 }
 
 function getUserOne(req, res) {
-  User.findById(req.params.userId)
+  User.findById(req.params.userID)
     .then((user) => {
       if (!user) {
         res
