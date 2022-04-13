@@ -58,6 +58,8 @@ function likeCard(req, res) {
     .catch((err) => {
       if (err.name === "CastError") {
         res.status(400).send({ message: "Невалидный id " });
+      } else {
+        res.status(500).send({ message: `Внутренняя ошибка сервера: ${err}` });
       }
     });
 }
@@ -79,6 +81,8 @@ function dislikeCard(req, res) {
     .catch((err) => {
       if (err.name === "CastError") {
         res.status(400).send({ message: "Невалидный id " });
+      } else {
+        res.status(500).send({ message: `Внутренняя ошибка сервера: ${err}` });
       }
     });
 }

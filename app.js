@@ -22,7 +22,7 @@ app.use("/", routerUsers);
 app.use("/", routerCards);
 
 app.use((req, res) => {
-  res.status(404).send({ message: "Здесь нужен ответ" });
+  res.status(404).send({ message: "Роутер не найден!" });
 });
 
 mongoose.connect("mongodb://localhost:27017/mestodb ", {
