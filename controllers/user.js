@@ -22,7 +22,11 @@ function getUserOne(req, res) {
       }
     })
     .catch((err) => {
-      res.status(500).send({ message: `Внутренняя ошибка сервера: ${err}` });
+      if (err.name === "CastError") {
+        res.status(400).send({ message: `Передан некорректный id: ${err}` });
+        return;
+      }
+      res.status(500).send({ message: `Внутреняя ошибка сервера ${err}` });
     });
 }
 
