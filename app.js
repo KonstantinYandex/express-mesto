@@ -12,7 +12,7 @@ const { PORT = 3000 } = process.env;
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-router.post(
+app.post(
   "/signin",
   celebrate({
     body: Joi.object().keys({
@@ -22,6 +22,7 @@ router.post(
   }),
   login
 );
+
 app.post(
   "/signup",
   celebrate({
