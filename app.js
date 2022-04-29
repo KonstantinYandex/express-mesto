@@ -4,7 +4,7 @@ const bodyParser = require("body-parser");
 const routerCards = require("./routers/card");
 const routerUsers = require("./routers/user.js");
 const auth = require("./middlewares/auth");
-const { celebrate, Joi } = require("celebrate");
+const { celebrate, Joi, errors } = require("celebrate");
 const { login, addUser } = require("./controllers/user");
 const app = express();
 const { PORT = 3000 } = process.env;

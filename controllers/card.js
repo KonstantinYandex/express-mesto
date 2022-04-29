@@ -19,7 +19,7 @@ function addCard(req, res, next) {
     .then((card) => res.status(200).send(card))
     .catch((err) => {
       if (err.name === "ValidationError") {
-        throw new NotAuthError(err.message);
+        next(new BadRequestError(err.message));
       } else {
         next(err);
       }
@@ -28,20 +28,22 @@ function addCard(req, res, next) {
 
 function deleteCard(req, res, next) {
   const id = req.user._id;
-  Card.findById(req.params.cardId).then((cards) => {
-    if (!cards) {
-      throw new NotFoundError("Карточка с таким id не найдена.");
-    }
-    if (cards.owner.toString() !== id) {
-      throw new Forbidden("Нет прав для удаления карточки");
-    } else {
-      Card.findByIdAndRemove(req.params.cardId)
-        .then((cards) => {
-          res.status(200).send(cards);
-        })
-        .catch(next);
-    }
-  });
+  Card.findById(req.params.cardId)
+    .then((cards) => {
+      if (!cards) {
+        throw new NotFoundError("Карточка с таким id не найдена.");
+      }
+      if (cards.owner.toString() !== id) {
+        throw new Forbidden("Нет прав для удаления карточки");
+      } else {
+        Card.findByIdAndRemove(req.params.cardId)
+          .then((cards) => {
+            res.status(200).send(cards);
+          })
+          .catch(next);
+      }
+    })
+    .catch(next);
 }
 
 function likeCard(req, res, next) {

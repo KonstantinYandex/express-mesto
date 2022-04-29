@@ -14,8 +14,8 @@ function getUsers(req, res, next) {
     .catch(next);
 }
 
-function getUserOne(req, res) {
-  User.findById(req.params.userID)
+function getUserOne(req, res, next) {
+  User.findById(req.params._id)
     .then((user) => {
       if (!user) {
         throw new NotFoundError("Нет пользователя с таким id");
@@ -25,14 +25,14 @@ function getUserOne(req, res) {
     })
     .catch((err) => {
       if (err.name === "CastError") {
-        throw new BadRequestError(err.message);
+        next(new BadRequestError(err.message));
       } else {
         next(err);
       }
     });
 }
 
-function addUser(req, res) {
+function addUser(req, res, next) {
   const { name, about, avatar, email, password } = req.body;
 
   bcrypt.hash(password, 10).then((hash) => {
@@ -40,10 +40,10 @@ function addUser(req, res) {
       .then((user) => res.status(200).send(user))
       .catch((err) => {
         if (err.name === "ValidationError") {
-          throw new BadRequestError(err.message);
+          next(new BadRequestError(err.message));
         }
         if (err.code === 11000 && err.code === "MongoError") {
-          throw new ConflictError("Пользователь с таким email уже существует");
+          next(new ConflictError("Пользователь с таким email уже существует"));
         } else {
           next(err);
         }
@@ -51,7 +51,7 @@ function addUser(req, res) {
   });
 }
 
-function updateProfile(req, res) {
+function updateProfile(req, res, next) {
   const { name, about } = req.body;
 
   User.findByIdAndUpdate(
@@ -68,7 +68,7 @@ function updateProfile(req, res) {
     })
     .catch((err) => {
       if (err.name === "ValidationError") {
-        throw new BadRequestError(err.message);
+        next(new BadRequestError(err.message));
       } else {
         next(err);
       }
@@ -76,7 +76,7 @@ function updateProfile(req, res) {
     .catch(next);
 }
 
-function updateAvatar(req, res) {
+function updateAvatar(req, res, next) {
   const { avatar } = req.body;
 
   User.findByIdAndUpdate(
@@ -93,7 +93,7 @@ function updateAvatar(req, res) {
     })
     .catch((err) => {
       if (err.name === "ValidationError") {
-        throw new BadRequestError(err.message);
+        next(new BadRequestError(err.message));
       } else {
         next(err);
       }
@@ -101,7 +101,7 @@ function updateAvatar(req, res) {
     .catch(next);
 }
 
-function login(req, res) {
+function login(req, res, next) {
   const { email, password } = req.body;
 
   return User.findUserByCredentials(email, password)

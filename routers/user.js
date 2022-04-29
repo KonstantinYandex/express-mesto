@@ -11,8 +11,10 @@ router.get("/users/me", getUserOne);
 router.patch(
   "/users/me",
   celebrate({
-    name: Joi.string().min(2).max(30),
-    about: Joi.string().min(2).max(30),
+    body: Joi.object().keys({
+      name: Joi.string().min(2).max(30),
+      about: Joi.string().min(2).max(30),
+    }),
   }),
   updateProfile
 );
