@@ -22,14 +22,7 @@ const userSchema = new mongoose.Schema({
   password: {
     type: String,
     required: true,
-    minlength: 8,
     select: false,
-    validate: {
-      validator(v) {
-        return validator.isStrongPassword(v);
-      },
-      message: "Ваш пароль не является надежным",
-    },
   },
   about: {
     type: String,
@@ -41,6 +34,12 @@ const userSchema = new mongoose.Schema({
     type: String,
     default:
       "https://pictures.s3.yandex.net/resources/jacques-cousteau_1604399756.png",
+    validate: {
+      validator(v) {
+        return validator.isURL(v);
+      },
+      message: "Неправильный URL",
+    },
   },
 });
 

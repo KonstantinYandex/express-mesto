@@ -8,6 +8,7 @@ const { celebrate, Joi } = require("celebrate");
 const { login, addUser } = require("./controllers/user");
 const app = express();
 const { PORT = 3000 } = process.env;
+const NotFoundError = require("./errors/not-found-error");
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -17,7 +18,7 @@ app.post(
   celebrate({
     body: Joi.object().keys({
       email: Joi.string().required().email(),
-      password: Joi.string().required().min(8),
+      password: Joi.string().required(),
     }),
   }),
   login
@@ -28,9 +29,7 @@ app.post(
   celebrate({
     body: Joi.object().keys({
       email: Joi.string().required().email(),
-      password: Joi.string()
-        .required()
-        .pattern(new RegExp("^[A-Za-z0-9]{8,30}$")),
+      password: Joi.string().required(),
       name: Joi.string().min(2).max(30),
       about: Joi.string().min(2).max(30),
       avatar: Joi.string().regex(
@@ -47,24 +46,19 @@ app.use("/", routerUsers);
 app.use("/", routerCards);
 
 app.use((req, res) => {
-  res.status(404).send({ message: "Роутер не найден!" });
+  next(new NotFoundError("Роутер не найден"));
 });
 
 mongoose.connect("mongodb://localhost:27017/mestodb ", {
   useNewUrlParser: true,
 });
 
+app.use(errors());
+
 app.use((err, req, res, next) => {
   const { statusCode = 500, message } = err;
-  if (err.kind === "ObjectId") {
-    res.status(400).send({
-      message: "Неверно переданы данные",
-    });
-  } else {
-    res.status(statusCode).send({
-      message: statusCode === 500 ? "На сервере произошла ошибка" : message,
-    });
-  }
+
+  res.status(statusCode).send({ message });
 });
 
 app.listen(PORT, () => {

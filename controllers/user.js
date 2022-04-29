@@ -26,9 +26,10 @@ function getUserOne(req, res) {
     .catch((err) => {
       if (err.name === "CastError") {
         throw new BadRequestError(err.message);
+      } else {
+        next(err);
       }
-    })
-    .catch(next);
+    });
 }
 
 function addUser(req, res) {
@@ -43,9 +44,10 @@ function addUser(req, res) {
         }
         if (err.code === 11000 && err.code === "MongoError") {
           throw new ConflictError("Пользователь с таким email уже существует");
+        } else {
+          next(err);
         }
-      })
-      .catch(next);
+      });
   });
 }
 
@@ -67,6 +69,8 @@ function updateProfile(req, res) {
     .catch((err) => {
       if (err.name === "ValidationError") {
         throw new BadRequestError(err.message);
+      } else {
+        next(err);
       }
     })
     .catch(next);
@@ -90,6 +94,8 @@ function updateAvatar(req, res) {
     .catch((err) => {
       if (err.name === "ValidationError") {
         throw new BadRequestError(err.message);
+      } else {
+        next(err);
       }
     })
     .catch(next);
