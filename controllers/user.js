@@ -47,7 +47,8 @@ function addUser(req, res, next) {
         } else {
           next(err);
         }
-      });
+      })
+      .catch(next);
   });
 }
 
