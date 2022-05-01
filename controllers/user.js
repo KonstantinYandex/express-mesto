@@ -1,7 +1,7 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const User = require("../models/users");
-const NotFoundError = require("../errors/not-auth-error");
+const NotFoundError = require("../errors/not-found-error");
 const NotAuthError = require("../errors/not-auth-error");
 const ConflictError = require("../errors/conflict-error");
 const BadRequestError = require("../errors/bad-request-error");
@@ -15,7 +15,7 @@ function getUsers(req, res, next) {
 }
 
 function getUserOne(req, res, next) {
-  User.findById(req.params._id)
+  User.findById(req.user._id)
     .then((user) => {
       if (!user) {
         next(new NotFoundError("Нет пользователя с таким id"));
@@ -33,6 +33,22 @@ function getUserOne(req, res, next) {
     .catch(next);
 }
 
+const getUserById = (req, res, next) => {
+  User.findById(req.params.id)
+    .then((user) => {
+      if (!user) {
+        next(new NotFoundError("Нет пользователя с таким id"));
+      }
+      res.status(200).send(user);
+    })
+    .catch((err) => {
+      if (err.name === "CastError") {
+        next(new BadRequestError(err.message));
+      }
+    })
+    .catch(next);
+};
+
 function addUser(req, res, next) {
   const { name, about, avatar, email, password } = req.body;
 
@@ -43,7 +59,7 @@ function addUser(req, res, next) {
         if (err.name === "ValidationError") {
           next(new BadRequestError(err.message));
         }
-        if (err.code === 11000 && err.code === "MongoError") {
+        if (err.code === 11000) {
           next(new ConflictError("Пользователь с таким email уже существует"));
         } else {
           next(err);
@@ -126,4 +142,5 @@ module.exports = {
   updateProfile,
   updateAvatar,
   login,
+  getUserById,
 };

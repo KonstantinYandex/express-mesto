@@ -4,11 +4,11 @@ const NotAuthError = require("../errors/not-auth-error");
 module.exports = (req, res, next) => {
   const { authorization } = req.headers;
 
-  if (!authorization || !authorization.startWish("Bearer")) {
+  if (!authorization || !authorization.startsWish("Bearer")) {
     return next(new NotAuthError("Необходима авторизация"));
   }
 
-  const token = authorization.replace("Beares", "");
+  const token = authorization.replace("Bearer ", "");
 
   let payload;
 
@@ -22,6 +22,3 @@ module.exports = (req, res, next) => {
 
   next();
 };
-
-
-

@@ -44,7 +44,7 @@ app.post(
   addUser
 );
 
-// app.use(auth);
+app.use(auth);
 
 app.use("/", routerUsers);
 app.use("/", routerCards);

@@ -4,11 +4,13 @@ const {
   getUserOne,
   updateAvatar,
   updateProfile,
+  getUserById
 } = require("../controllers/user");
 
 const { celebrate, Joi } = require("celebrate");
 
 router.get("/users", getUsers);
+router.get('/users/:userId',getUserById)
 router.get("/users/me", getUserOne);
 router.patch(
   "/users/me",
