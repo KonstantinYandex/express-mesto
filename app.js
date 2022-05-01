@@ -40,14 +40,14 @@ app.post(
   addUser
 );
 
+app.use("*", () => {
+  throw new NotFoundError("Запрашиваемый ресурс не найден");
+});
+
 app.use(auth);
 
 app.use("/", routerUsers);
 app.use("/", routerCards);
-
-app.use("*", () => {
-  throw new NotFoundError("Запрашиваемый ресурс не найден");
-});
 
 mongoose.connect("mongodb://localhost:27017/mestodb ", {
   useNewUrlParser: true,
