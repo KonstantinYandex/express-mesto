@@ -30,6 +30,7 @@ function getUserOne(req, res, next) {
         next(err);
       }
     })
+    .catch(next);
 }
 
 function addUser(req, res, next) {
@@ -48,6 +49,7 @@ function addUser(req, res, next) {
           next(err);
         }
       })
+      .catch(next);
   });
 }
 
@@ -73,6 +75,7 @@ function updateProfile(req, res, next) {
         next(err);
       }
     })
+    .catch(next);
 }
 
 function updateAvatar(req, res, next) {
@@ -97,6 +100,7 @@ function updateAvatar(req, res, next) {
         next(err);
       }
     })
+    .catch(next);
 }
 
 function login(req, res, next) {
