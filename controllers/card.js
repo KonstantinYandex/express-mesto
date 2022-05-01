@@ -1,8 +1,7 @@
-const Card = require("../models/cards");
-const NotFoundError = require("../errors/not-found-error");
-const NotAuthError = require("../errors/not-auth-error");
-const BadRequestError = require("../errors/bad-request-error");
-const Forbidden = require("../errors/forbidden");
+const Card = require('../models/cards');
+const NotFoundError = require('../errors/not-found-error');
+const BadRequestError = require('../errors/bad-request-error');
+const Forbidden = require('../errors/forbidden');
 
 function getCards(req, res, next) {
   Card.find({})
@@ -18,7 +17,7 @@ function addCard(req, res, next) {
   Card.create({ name, link, likes, owner: req.user._id })
     .then((card) => res.status(200).send(card))
     .catch((err) => {
-      if (err.name === "ValidationError") {
+      if (err.name === 'ValidationError') {
         next(new BadRequestError(err.message));
       } else {
         next(err);
@@ -31,10 +30,10 @@ function deleteCard(req, res, next) {
   Card.findById(req.params.cardId)
     .then((cards) => {
       if (!cards) {
-        throw new NotFoundError("Карточка с таким id не найдена.");
+        throw new NotFoundError('Карточка с таким id не найдена.');
       }
       if (cards.owner.toString() !== id) {
-        throw new Forbidden("Нет прав для удаления карточки");
+        throw new Forbidden('Нет прав для удаления карточки');
       } else {
         Card.findByIdAndRemove(req.params.cardId)
           .then((cards) => {
@@ -50,11 +49,11 @@ function likeCard(req, res, next) {
   Card.findByIdAndUpdate(
     req.params.cardId,
     { $addToSet: { likes: req.user._id } },
-    { new: true }
+    { new: true },
   )
     .then((card) => {
       if (!card) {
-        throw new NotFoundError("Карточка с таким id не найдена.");
+        throw new NotFoundError('Карточка с таким id не найдена.');
       }
       res.status(200).send(card);
     })
@@ -69,7 +68,7 @@ function dislikeCard(req, res, next) {
   )
     .then((card) => {
       if (!card) {
-        throw new NotFoundError("Карточка с таким id не найдена.");
+        throw new NotFoundError('Карточка с таким id не найдена.');
       }
       res.status(200).send(card);
     })
