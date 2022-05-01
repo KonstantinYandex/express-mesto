@@ -1,10 +1,11 @@
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
-const User = require("../models/users");
-const NotFoundError = require("../errors/not-found-error");
-const NotAuthError = require("../errors/not-auth-error");
-const ConflictError = require("../errors/conflict-error");
-const BadRequestError = require("../errors/bad-request-error");
+/* eslint-disable object-curly-newline */
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const User = require('../models/users');
+const NotFoundError = require('../errors/not-found-error');
+const NotAuthError = require('../errors/not-auth-error');
+const ConflictError = require('../errors/conflict-error');
+const BadRequestError = require('../errors/bad-request-error');
 
 function getUsers(req, res, next) {
   User.find({})
@@ -18,13 +19,13 @@ function getUserOne(req, res, next) {
   User.findById(req.user._id)
     .then((user) => {
       if (!user) {
-        next(new NotFoundError("Нет пользователя с таким id"));
+        next(new NotFoundError('Нет пользователя с таким id'));
       } else {
         res.status(200).send(user);
       }
     })
     .catch((err) => {
-      if (err.name === "CastError") {
+      if (err.name === 'CastError') {
         next(new BadRequestError(err.message));
       } else {
         next(err);
@@ -37,12 +38,12 @@ const getUserById = (req, res, next) => {
   User.findById(req.params.id)
     .then((user) => {
       if (!user) {
-        next(new NotFoundError("Нет пользователя с таким id"));
+        next(new NotFoundError('Нет пользователя с таким id'));
       }
       res.status(200).send(user);
     })
     .catch((err) => {
-      if (err.name === "CastError") {
+      if (err.name === 'CastError') {
         next(new BadRequestError(err.message));
       }
     })
@@ -50,25 +51,30 @@ const getUserById = (req, res, next) => {
 };
 
 function addUser(req, res, next) {
-  const {
-    name, about, avatar, email, password,
-  } = req.body;
+  const { name, about, avatar, email, password } = req.body;
 
   bcrypt.hash(password, 10).then((hash) => {
     // eslint-disable-next-line func-call-spacing
     User.create({
-      name, about, avatar, email, password: hash,
+      name,
+      about,
+      avatar,
+      email,
+      password: hash,
     })
       // eslint-disable-next-line no-unused-vars
       .then((user) => res.status(200).send({
-        name, about, avatar, email,
+        name,
+        about,
+        avatar,
+        email,
       }))
       .catch((err) => {
-        if (err.name === "ValidationError") {
+        if (err.name === 'ValidationError') {
           next(new BadRequestError(err.message));
         }
         if (err.code === 11000) {
-          next(new ConflictError("Пользователь с таким email уже существует"));
+          next(new ConflictError('Пользователь с таким email уже существует'));
         } else {
           next(err);
         }
@@ -87,13 +93,13 @@ function updateProfile(req, res, next) {
   )
     .then((user) => {
       if (!user) {
-        throw new NotFoundError("Пользователь с таким id не найден");
+        throw new NotFoundError('Пользователь с таким id не найден');
       } else {
         res.status(200).send(user);
       }
     })
     .catch((err) => {
-      if (err.name === "ValidationError") {
+      if (err.name === 'ValidationError') {
         next(new BadRequestError(err.message));
       } else {
         next(err);
@@ -112,13 +118,13 @@ function updateAvatar(req, res, next) {
   )
     .then((user) => {
       if (!user) {
-        throw new NotFoundError("Пользователь с таким id не найден");
+        throw new NotFoundError('Пользователь с таким id не найден');
       } else {
         res.status(200).send(user);
       }
     })
     .catch((err) => {
-      if (err.name === "ValidationError") {
+      if (err.name === 'ValidationError') {
         next(new BadRequestError(err.message));
       } else {
         next(err);
@@ -132,8 +138,8 @@ function login(req, res, next) {
 
   return User.findUserByCredentials(email, password)
     .then((user) => {
-      const token = jwt.sign({ _id: user._id }, "some-secret-key", {
-        expiresIn: "7d",
+      const token = jwt.sign({ _id: user._id }, 'some-secret-key', {
+        expiresIn: '7d',
       });
       return res.send({ token });
     })
