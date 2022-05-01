@@ -2,6 +2,5 @@
   "rules": {
     "no-underscore-dangle": ["error", { "allow": ["_id"] }]
   },
-  "extends": "airbnb-base",
-  "quotes": ["single"]
+  "extends": "airbnb-base"
 }
