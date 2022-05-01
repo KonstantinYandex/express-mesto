@@ -18,21 +18,18 @@ function getUserOne(req, res, next) {
   User.findById(req.params._id)
     .then((user) => {
       if (!user) {
-        // next(new NotFoundError("Нет пользователя с таким id"));
-        throw new NotAuthError("Нет пользователя с таким id");
+        next(new NotFoundError("Нет пользователя с таким id"));
       } else {
         res.status(200).send(user);
       }
     })
     .catch((err) => {
       if (err.name === "CastError") {
-        // next(new BadRequestError(err.message));
-        throw new BadRequestError(err.message);
+        next(new BadRequestError(err.message));
       } else {
         next(err);
       }
     })
-    .catch(next);
 }
 
 function addUser(req, res, next) {
@@ -51,7 +48,6 @@ function addUser(req, res, next) {
           next(err);
         }
       })
-      .catch(next);
   });
 }
 
@@ -77,7 +73,6 @@ function updateProfile(req, res, next) {
         next(err);
       }
     })
-    .catch(next);
 }
 
 function updateAvatar(req, res, next) {
@@ -102,7 +97,6 @@ function updateAvatar(req, res, next) {
         next(err);
       }
     })
-    .catch(next);
 }
 
 function login(req, res, next) {
