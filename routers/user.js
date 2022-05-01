@@ -1,5 +1,5 @@
-const router = require('express').Router();
-const { celebrate, Joi } = require('celebrate');
+const router = require("express").Router();
+const { celebrate, Joi } = require("celebrate");
 
 const {
   getUsers,
@@ -7,13 +7,13 @@ const {
   updateAvatar,
   updateProfile,
   getUserById,
-} = require('../controllers/user');
+} = require("../controllers/user");
 
-router.get('/users', getUsers);
-router.get('/users/:userId', getUserById);
-router.get('/users/me', getUserOne);
+router.get("/users", getUsers);
+router.get("/users/:userId", getUserById);
+router.get("/users/me", getUserOne);
 router.patch(
-  '/users/me',
+  "/users/me",
   celebrate({
     body: Joi.object().keys({
       name: Joi.string().min(2).max(30),
@@ -23,11 +23,11 @@ router.patch(
   updateProfile,
 );
 router.patch(
-  '/users/me/avatar',
+  "/users/me/avatar",
   celebrate({
     body: Joi.object().keys({
       avatar: Joi.string().regex(
-        /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?$/,
+        /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?$/
       ),
     }),
   }),
