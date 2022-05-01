@@ -1,10 +1,10 @@
+const { celebrate, Joi, errors } = require("celebrate");
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const routerCards = require("./routers/card");
 const routerUsers = require("./routers/user.js");
 const auth = require("./middlewares/auth");
-const { celebrate, Joi, errors } = require("celebrate");
 const { login, addUser } = require("./controllers/user");
 const app = express();
 const { PORT = 3000 } = process.env;
@@ -55,15 +55,11 @@ app.use((req, res, next) => {
   next(new NotFoundError("Роутер не найден"));
 });
 
-
-
 app.use((err, req, res, next) => {
   const { statusCode = 500, message } = err;
 
   res.status(statusCode).send({ message });
 });
-
-
 
 app.listen(PORT, () => {
   console.log(`App listening on port ${PORT}`);

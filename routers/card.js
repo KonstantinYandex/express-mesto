@@ -6,6 +6,7 @@ const {
   likeCard,
   dislikeCard,
 } = require("../controllers/card");
+
 const { celebrate, Joi } = require("celebrate");
 
 router.get("/cards", getCards);
