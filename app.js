@@ -53,13 +53,15 @@ app.use((req, res, next) => {
   next(new NotFoundError("Роутер не найден"));
 });
 
-app.use(errors());
+
 
 app.use((err, req, res, next) => {
   const { statusCode = 500, message } = err;
 
   res.status(statusCode).send({ message });
 });
+
+app.use(errors());
 
 app.listen(PORT, () => {
   console.log(`App listening on port ${PORT}`);
