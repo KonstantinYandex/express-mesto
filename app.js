@@ -45,7 +45,7 @@ app.use(auth);
 app.use("/", routerUsers);
 app.use("/", routerCards);
 
-app.all("*", () => {
+app.use("*", () => {
   throw new NotFoundError("Запрашиваемый ресурс не найден");
 });
 
