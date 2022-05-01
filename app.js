@@ -49,10 +49,9 @@ app.use(auth);
 app.use("/", routerUsers);
 app.use("/", routerCards);
 
-app.all("*", (req, res, next) => {
-  next(new NotFoundError("Запрашиваемый ресурс не найден"));
+app.use((req, res, next) => {
+  next(new NotFoundError("Роутер не найден"));
 });
-
 app.use((err, req, res, next) => {
   const { statusCode = 500, message } = err;
 
