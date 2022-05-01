@@ -18,9 +18,10 @@ router.post(
       link: Joi.string()
         .required()
         .pattern(
+          // eslint-disable-next-line prefer-regex-literals
           new RegExp(
-            /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?$/
-          )
+            /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?$/,
+          ),
         ),
     }),
   }),

@@ -14,7 +14,9 @@ function getCards(req, res, next) {
 function addCard(req, res, next) {
   const { name, link, likes } = req.body;
 
-  Card.create({ name, link, likes, owner: req.user._id })
+  Card.create({
+    name, link, likes, owner: req.user._id,
+  })
     .then((card) => res.status(200).send(card))
     .catch((err) => {
       if (err.name === "ValidationError") {
@@ -36,6 +38,7 @@ function deleteCard(req, res, next) {
         throw new Forbidden("Нет прав для удаления карточки");
       } else {
         Card.findByIdAndRemove(req.params.cardId)
+          // eslint-disable-next-line no-shadow
           .then((cards) => {
             res.status(200).send(cards);
           })
@@ -49,7 +52,7 @@ function likeCard(req, res, next) {
   Card.findByIdAndUpdate(
     req.params.cardId,
     { $addToSet: { likes: req.user._id } },
-    { new: true }
+    { new: true },
   )
     .then((card) => {
       if (!card) {
@@ -64,7 +67,7 @@ function dislikeCard(req, res, next) {
   Card.findByIdAndUpdate(
     req.params.cardId,
     { $pull: { likes: req.user._id } },
-    { new: true }
+    { new: true },
   )
     .then((card) => {
       if (!card) {

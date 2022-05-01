@@ -50,11 +50,19 @@ const getUserById = (req, res, next) => {
 };
 
 function addUser(req, res, next) {
-  const { name, about, avatar, email, password } = req.body;
+  const {
+    name, about, avatar, email, password,
+  } = req.body;
 
   bcrypt.hash(password, 10).then((hash) => {
-    User.create({ name, about, avatar, email, password: hash })
-      .then((user) => res.status(200).send({ name, about, avatar, email }))
+    // eslint-disable-next-line func-call-spacing
+    User.create({
+      name, about, avatar, email, password: hash,
+    })
+      // eslint-disable-next-line no-unused-vars
+      .then((user) => res.status(200).send({
+        name, about, avatar, email,
+      }))
       .catch((err) => {
         if (err.name === "ValidationError") {
           next(new BadRequestError(err.message));
@@ -75,7 +83,7 @@ function updateProfile(req, res, next) {
   User.findByIdAndUpdate(
     req.user._id,
     { name, about },
-    { new: true, runValidators: true }
+    { new: true, runValidators: true },
   )
     .then((user) => {
       if (!user) {
@@ -100,7 +108,7 @@ function updateAvatar(req, res, next) {
   User.findByIdAndUpdate(
     req.user._id,
     { avatar },
-    { new: true, runValidators: true }
+    { new: true, runValidators: true },
   )
     .then((user) => {
       if (!user) {
