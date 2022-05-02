@@ -38,7 +38,7 @@ const getUserById = (req, res, next) => {
   User.findById(req.params.id)
     .then((user) => {
       if (!user) {
-        next(new BadRequestError('Нет пользователя с таким id'));
+        next(new NotAuthError('Нет пользователя с таким id'));
       }
       res.status(200).send(user);
     })
