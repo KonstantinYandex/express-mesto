@@ -10,8 +10,8 @@ const {
 } = require('../controllers/user');
 
 router.get('/users', getUsers);
-router.get('/users/:userId', getUserById);
 router.get('/users/me', getUserOne);
+router.get('/users/:userId', getUserById);
 router.patch(
   '/users/me',
   celebrate({

@@ -5,7 +5,7 @@ const NotAuthError = require('../errors/not-auth-error');
 module.exports = (req, res, next) => {
   const { authorization } = req.headers;
 
-  if (!authorization || !authorization.startsWish('Bearer')) {
+  if (!authorization || !authorization.startsWith('Bearer')) {
     return next(new NotAuthError('Необходима авторизация'));
   }
 
