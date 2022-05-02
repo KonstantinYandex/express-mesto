@@ -19,7 +19,7 @@ function getUserOne(req, res, next) {
   User.findById(req.user._id)
     .then((user) => {
       if (!user) {
-        next(new NotFoundError('Нет пользователя с таким id'));
+        next(new BadRequestError('Нет пользователя с таким id'));
       } else {
         res.status(200).send(user);
       }
@@ -38,7 +38,7 @@ const getUserById = (req, res, next) => {
   User.findById(req.params.id)
     .then((user) => {
       if (!user) {
-        next(new NotFoundError('Нет пользователя с таким id'));
+        next(new BadRequestError('Нет пользователя с таким id'));
       }
       res.status(200).send(user);
     })
