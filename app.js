@@ -2,10 +2,12 @@ const { celebrate, Joi, errors } = require('celebrate');
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 const routerCards = require('./routers/card');
 const routerUsers = require('./routers/user');
 const auth = require('./middlewares/auth');
 const { login, addUser } = require('./controllers/user');
+const { requestLogger, errorLogger } = require('./middlewares/logger');
 
 const app = express();
 const { PORT = 3000 } = process.env;
@@ -18,6 +20,27 @@ mongoose.connect('mongodb://localhost:27017/mestodb ', {
   useNewUrlParser: true,
 });
 
+const allowedCors = [
+  'https://konstantinnovikov.nomoredomains.xyz',
+  'https://api.konstantinnovikov.nomoredomains.xyz',
+  'https://localhost:3000',
+];
+
+app.use(cors({
+  origin: allowedCors,
+}));
+
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Headers', '*');
+  res.header('Access-Control-Allow-Methods', 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS');
+  if (req.method === 'OPTIONS') {
+    res.status(200).send();
+    return;
+  }
+  next();
+});
+
 app.post(
   '/signin',
   celebrate({
@@ -28,6 +51,8 @@ app.post(
   }),
   login,
 );
+
+app.use(requestLogger);
 
 app.post(
   '/signup',
@@ -49,6 +74,8 @@ app.use(auth);
 
 app.use('/', routerUsers);
 app.use('/', routerCards);
+
+app.use(errorLogger);
 
 app.use(errors());
 
