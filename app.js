@@ -22,9 +22,9 @@ mongoose.connect('mongodb://localhost:27017/mestodb ', {
 });
 
 const allowedCors = [
-  'https://konstantinnovikov.nomoredomains.xyz',
-  'https://api.konstantinnovikov.nomoredomains.xyz',
-  'https://localhost:3000',
+  'http://konstantinnovikov.nomoredomains.xyz',
+  'http://api.konstantinnovikov.nomoredomains.xyz',
+  'http://localhost:3000',
 ];
 
 app.use(cors({
