@@ -63,7 +63,7 @@ function addUser(req, res, next) {
       password: hash,
     })
       // eslint-disable-next-line no-unused-vars
-      .then((user) => res.status(200).send({
+      .then((user) => res.status(201).send({
         name,
         about,
         avatar,
