@@ -21,7 +21,7 @@ function getUserOne(req, res, next) {
   User.findById(req.user._id)
     .then((user) => {
       if (!user) {
-        next(new BadRequestError('Нет пользователя с таким id'));
+        next(new NotFoundError('Нет пользователя с таким id'));
       } else {
         res.status(200).send(user);
       }
@@ -37,16 +37,16 @@ function getUserOne(req, res, next) {
 }
 
 const getUserById = (req, res, next) => {
-  User.findById(req.params.id)
+  User.findById(req.params.UserId)
     .then((user) => {
       if (!user) {
-        next(new BadRequestError('Нет пользователя с таким id'));
+        next(new NotFoundError('Нет пользователя с таким id'));
       }
       res.status(200).send(user);
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        next(new BadRequestError(err.message));
+        next(new NotFoundError(err.message));
       }
     })
     .catch(next);
