@@ -49,7 +49,7 @@ const cors = (req, res, next) => {
   return next();
 };
 
-app.use(cors());
+app.use(cors);
 
 app.get("/crash-test", () => {
   setTimeout(() => {
