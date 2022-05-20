@@ -27,7 +27,7 @@ mongoose.connect("mongodb://localhost:27017/mestodb", {
 //   'http://localhost:3000',
 // ];
 
-app.use(cors());
+
 
 const cors = (req, res, next) => {
   const { origin } = req.headers;
@@ -48,6 +48,8 @@ const cors = (req, res, next) => {
 
   return next();
 };
+
+app.use(cors());
 
 app.get("/crash-test", () => {
   setTimeout(() => {
