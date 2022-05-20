@@ -21,6 +21,12 @@ mongoose.connect('mongodb://localhost:27017/mestodb', {
   useNewUrlParser: true,
 });
 
+app.get('/crash-test', () => {
+  setTimeout(() => {
+    throw new Error('Сервер сейчас упадёт');
+  }, 0);
+});
+
 const allowedCors = [
   'http://konstantinnovikov.nomoredomains.xyz',
   'http://api.konstantinnovikov.nomoredomains.xyz',
@@ -40,12 +46,6 @@ app.use((req, res, next) => {
     return;
   }
   next();
-});
-
-app.get('/crash-test', () => {
-  setTimeout(() => {
-    throw new Error('Сервер сейчас упадёт');
-  }, 0);
 });
 
 app.use(requestLogger);
