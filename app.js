@@ -21,15 +21,15 @@ mongoose.connect('mongodb://localhost:27017/mestodb', {
   useNewUrlParser: true,
 });
 
-const allowedCors = [
-  'http://konstantinnovikov.nomoredomains.xyz',
-  'http://api.konstantinnovikov.nomoredomains.xyz',
-  'http://localhost:3000',
-];
+// const allowedCors = [
+//   'http://konstantinnovikov.nomoredomains.xyz',
+//   'http://api.konstantinnovikov.nomoredomains.xyz',
+//   'http://localhost:3000',
+// ];
 
-app.use(cors({
-  origin: allowedCors,
-}));
+// app.use(cors({
+//   origin: allowedCors,
+// }));
 
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
