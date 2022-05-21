@@ -65,7 +65,7 @@ function addUser(req, res, next) {
       password: hash,
     })
       // eslint-disable-next-line no-unused-vars
-      .then((user) => res.status(201).send(user))
+      .then((user) => res.status(200).send(user))
       .catch((err) => {
         if (err.name === 'ValidationError') {
           next(new BadRequestError(err.message));
