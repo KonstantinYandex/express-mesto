@@ -56,7 +56,6 @@ function addUser(req, res, next) {
   const { name, about, avatar, email, password } = req.body;
 
   bcrypt.hash(password, 10).then((hash) => {
-    // eslint-disable-next-line func-call-spacing
     User.create({
       name,
       about,
@@ -64,7 +63,6 @@ function addUser(req, res, next) {
       email,
       password: hash,
     })
-      // eslint-disable-next-line no-unused-vars
       .then((user) => res.status(200).send(user))
       .catch((err) => {
         if (err.name === 'ValidationError') {
